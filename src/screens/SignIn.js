@@ -7,12 +7,14 @@ import {
   TextInput,
 } from "react-native";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 import { Picker } from "@react-native-picker/picker";
 
 import countries from "../assets/countries.json";
 import { rules } from "../assets/rules.js";
+OTPVerification
+import OTPVerification from "./OTPVerification";
 
 const SignIn = () => {
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
@@ -22,27 +24,11 @@ const SignIn = () => {
   const [code, setCode] = useState("");
   const [verificationId, setVerificationId] = useState(null);
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredCountries, setFilteredCountries] = useState(countries);
-
   const [error, setError] = useState("");
 
   const handleCountryChange = (itemValue) => {
     const country = countries.find((c) => c.name === itemValue);
     setSelectedCountry(country);
-  };
-
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-
-    if (query.trim() === "") {
-      setFilteredCountries(countries);
-    } else {
-      const filtered = countries.filter((country) =>
-        country.name.toLowerCase().includes(query.toLowerCase())
-      );
-      setFilteredCountries(filtered);
-    }
   };
 
   const handlePhoneNumberChange = (text) => {
@@ -60,7 +46,11 @@ const SignIn = () => {
   // };
 
   return (
-    <View style={styles.loginContainer}>
+    <>
+    {verificationId !== null ? (
+      <OTPVerification />
+    ) : (
+      <View style={styles.loginContainer}>
       <Image
         source={require("../../assets/facecall-img.jpeg")}
         style={styles.welcomeImage}
@@ -78,12 +68,6 @@ const SignIn = () => {
               selectedValue={selectedCountry.name}
               onValueChange={handleCountryChange}
             >
-              {/* <TextInput
-    style={styles.searchInput}
-    placeholder="Search for a country"
-    value={searchQuery}
-    onChangeText={setSearchQuery}
-  /> */}
               {countries.map((country) => (
                 <Picker.Item
                   key={country.name}
@@ -118,26 +102,10 @@ const SignIn = () => {
           // }}
         />
       </View>
-
-      {/* <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.countryCodeInput}
-            placeholder="Enter Code"
-            keyboardType="numeric"
-            maxLength={6}
-            minLength={6}
-            onChangeText={setCode}
-          />
-        </View>
-        <View style={styles.submitBtn}>
-          <Button
-            title={code.length != 6 ? "OPT Must be 6 Digits" : "Confirm Code"}
-            disabled={code.length != 6}
-            onPress={confirmCode}
-          />
-        </View> 
-      */}
     </View>
+    )}
+    </>
+    
   );
 };
 

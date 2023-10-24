@@ -1,10 +1,9 @@
 import React, { useState, useRef } from "react";
 import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 
-const OTPInput = ({ navigation, route }) => {
+const OTPInput = () => {
   const [otpValue, setOtpValue] = useState("");
   const [focusedInput, setFocusedInput] = useState(null);
-  const { verificationId } = route.params;
   const inputRefs = useRef([]);
 
   let codeCount = 6;
@@ -35,23 +34,23 @@ const OTPInput = ({ navigation, route }) => {
     }
   };
   
-  const handleOTPVerification = () => {
-    if (otpValue.length === codeCount) {
-      const credential = firebase.auth.PhoneAuthProvider.credential(
-        verificationId,
-        otpValue
-      );
-      firebase
-        .auth()
-        .signInWithCredential(credential)
-        .then(() => {
-          Alert.alert("Success", "OTP Verification Successful");
-        })
-        .catch((error) => {
-          console.log("Error during OTP verification:", error);
-        });
-    }
-  };
+  // const handleOTPVerification = () => {
+  //   if (otpValue.length === codeCount) {
+  //     const credential = firebase.auth.PhoneAuthProvider.credential(
+  //       verificationId,
+  //       otpValue
+  //     );
+  //     firebase
+  //       .auth()
+  //       .signInWithCredential(credential)
+  //       .then(() => {
+  //         Alert.alert("Success", "OTP Verification Successful");
+  //       })
+  //       .catch((error) => {
+  //         console.log("Error during OTP verification:", error);
+  //       });
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
@@ -84,7 +83,7 @@ const OTPInput = ({ navigation, route }) => {
       </View>
       <Button
         title="Verify OTP"
-        onPress={handleOTPVerification}
+        onPress={'handleOTPVerification'}
         style={styles.verifyButton}
       />
     </View>
